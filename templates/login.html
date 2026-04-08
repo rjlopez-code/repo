@@ -1,0 +1,544 @@
+{% extends "base_login.html" %}
+{% block content %}
+
+<div class="tulip-login-container">
+    <!-- Decorative Tulip Garden Header -->
+    <div class="login-header">
+        <div class="tulip-garden-gate">
+            <span class="gate-tulip">🌷</span>
+            <span class="gate-icon">🏡</span>
+            <span class="gate-tulip">🌸</span>
+        </div>
+        <h2 class="login-title">Welcome to BIMS</h2>
+        <p class="login-subtitle">Barangay Information Management System</p>
+    </div>
+
+    <!-- Tulip Login Form -->
+    <div class="login-form-wrapper">
+        <form method="POST" class="tulip-login-form">
+            <!-- Role Selection -->
+            <div class="login-field">
+                <label class="tulip-label">
+                    <span class="label-icon">👥</span>
+                    <span>Login as</span>
+                </label>
+                <div class="role-selector">
+                    <label class="role-option">
+                        <input type="radio" name="role" value="admin" checked>
+                        <span class="role-emoji">👑</span>
+                        <span class="role-text">Admin</span>
+                    </label>
+                    <label class="role-option">
+                        <input type="radio" name="role" value="official">
+                        <span class="role-emoji">👤</span>
+                        <span class="role-text">Official</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Username Field with Tulip -->
+            <div class="login-field">
+                <label class="tulip-label">
+                    <span class="label-icon">👤</span>
+                    <span>Username</span>
+                </label>
+                <div class="input-wrapper">
+                    <span class="field-icon">🌷</span>
+                    <input type="text" name="username" class="tulip-input"
+                           placeholder="Enter your username" required autofocus>
+                </div>
+                <div class="field-decoration"></div>
+            </div>
+
+            <!-- Password Field with Tulip -->
+            <div class="login-field">
+                <label class="tulip-label">
+                    <span class="label-icon">🔒</span>
+                    <span>Password</span>
+                </label>
+                <div class="input-wrapper">
+                    <span class="field-icon">🌸</span>
+                    <input type="password" name="password" class="tulip-input"
+                           placeholder="Enter your password" required>
+                    <span class="toggle-password" onclick="togglePassword(this)">👁️</span>
+                </div>
+                <div class="field-decoration"></div>
+            </div>
+
+            <!-- Login Button -->
+            <button type="submit" class="tulip-btn tulip-btn-login">
+                <span class="btn-icon">🌷</span>
+                <span class="btn-text">Enter BIMS</span>
+                <span class="btn-icon">🌸</span>
+            </button>
+
+            <!-- Registration Link for Officials -->
+            <div class="register-prompt">
+                <p>Are you a Barangay Official? <a href="/register" class="register-link">Register here</a></p>
+            </div>
+
+            <!-- Demo Credentials -->
+            <div class="demo-credentials">
+                <p class="demo-title">🌱 Demo Access:</p>
+                <div class="credential-items">
+                    <div class="cred-group">
+                        <span class="cred-badge admin">👑 Admin: admin / admin123</span>
+                    </div>
+                    <div class="cred-group">
+                        <span class="cred-badge official">👤 For Officials: Please register</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Garden Footer -->
+    <div class="login-footer">
+        <div class="tulip-row">
+            <span class="footer-tulip">🌷</span>
+            <span class="footer-tulip">🌸</span>
+            <span class="footer-tulip">🌺</span>
+            <span class="footer-text">Barangay Information Management System</span>
+            <span class="footer-tulip">🌺</span>
+            <span class="footer-tulip">🌸</span>
+            <span class="footer-tulip">🌷</span>
+        </div>
+        <p class="copyright">© Barangay Officials Management System</p>
+    </div>
+</div>
+
+<!-- Floating Tulip Petals -->
+<div class="login-petals"></div>
+
+<style>
+/* 🌷 Pink Tulip Theme for Login Page */
+
+/* Main Container */
+.tulip-login-container {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+    animation: fadeIn 0.8s ease;
+}
+
+/* Login Header */
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.tulip-garden-gate {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.gate-tulip {
+    font-size: 3rem;
+    animation: sway 3s ease-in-out infinite;
+}
+
+.gate-tulip:first-child {
+    animation-delay: 0.2s;
+}
+
+.gate-tulip:last-child {
+    animation-delay: 0.4s;
+}
+
+.gate-icon {
+    font-size: 4rem;
+    background: linear-gradient(145deg, #ffb6c1, #ff69b4);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30% 30% 50% 50%;
+    color: white;
+    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+    animation: pulse 3s ease-in-out infinite;
+}
+
+.login-title {
+    color: #d44a8c;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 15px 0 10px;
+    text-shadow: 2px 2px 4px rgba(212, 74, 140, 0.2);
+}
+
+.login-subtitle {
+    color: #b34e7a;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+/* Login Form Wrapper */
+.login-form-wrapper {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 40px 35px;
+    box-shadow: 0 20px 40px rgba(214, 51, 132, 0.2);
+    border: 3px solid rgba(255, 182, 193, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Role Selector */
+.role-selector {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 15px 0 25px;
+}
+
+.role-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px 25px;
+    background: white;
+    border: 2px solid #ffb6c1;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+}
+
+.role-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+}
+
+.role-option input[type="radio"] {
+    display: none;
+}
+
+.role-option input[type="radio"]:checked + .role-emoji + .role-text {
+    color: #d44a8c;
+    font-weight: bold;
+}
+
+.role-option input[type="radio"]:checked ~ * {
+    color: #ff69b4;
+}
+
+.role-option input[type="radio"]:checked + .role-emoji {
+    animation: bounce 0.5s ease;
+}
+
+.role-option:has(input[type="radio"]:checked) {
+    background: linear-gradient(145deg, #fff0f5, #ffe6f0);
+    border-color: #ff69b4;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+}
+
+.role-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+}
+
+.role-text {
+    color: #b34e7a;
+    font-weight: 500;
+}
+
+/* Login Fields */
+.login-field {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.tulip-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #b34e7a;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.label-icon {
+    font-size: 1.2rem;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 3px solid #ffb6c1;
+    border-radius: 50px;
+    padding: 5px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.input-wrapper:focus-within {
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 5px rgba(255, 105, 180, 0.2);
+    transform: scale(1.02);
+}
+
+.field-icon {
+    padding: 0 15px;
+    font-size: 1.3rem;
+    color: #b34e7a;
+    animation: bounce 3s ease-in-out infinite;
+}
+
+.tulip-input {
+    flex: 1;
+    padding: 15px 5px;
+    border: none;
+    font-size: 1rem;
+    background: transparent;
+    outline: none;
+}
+
+.tulip-input::placeholder {
+    color: #ffb6c1;
+    font-style: italic;
+}
+
+.toggle-password {
+    padding: 0 20px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+}
+
+.toggle-password:hover {
+    opacity: 1;
+}
+
+/* Login Button */
+.tulip-btn-login {
+    width: 100%;
+    padding: 16px 20px;
+    background: linear-gradient(145deg, #ff8daf, #ff4d8c);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    border: 3px solid white;
+    box-shadow: 0 10px 25px rgba(255, 77, 140, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.tulip-btn-login:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(255, 77, 140, 0.4);
+}
+
+/* Registration Prompt - BAGONG ADDITION */
+.register-prompt {
+    text-align: center;
+    margin: 20px 0 15px;
+    padding: 15px 0;
+    border-top: 2px dashed #ffb6c1;
+    border-bottom: 2px dashed #ffb6c1;
+    color: #b34e7a;
+}
+
+.register-link {
+    color: #d44a8c;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 5px 15px;
+    border-radius: 30px;
+    transition: all 0.3s;
+    display: inline-block;
+    margin-left: 5px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.register-link:hover {
+    background: #ffb6c1;
+    color: white;
+    text-decoration: none;
+    transform: scale(1.05);
+}
+
+/* Demo Credentials - UPDATED */
+.demo-credentials {
+    margin-top: 25px;
+    text-align: center;
+    padding: 15px;
+    background: rgba(255, 240, 245, 0.7);
+    border-radius: 30px;
+    border: 2px dashed #ffb6c1;
+}
+
+.demo-title {
+    color: #b34e7a;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.credential-items {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cred-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.cred-badge {
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    border: 2px solid;
+    box-shadow: 0 3px 8px rgba(255, 105, 180, 0.1);
+}
+
+.cred-badge.admin {
+    background: white;
+    color: #d44a8c;
+    border-color: #ff69b4;
+}
+
+.cred-badge.official {
+    background: white;
+    color: #b34e7a;
+    border-color: #ffb6c1;
+}
+
+/* Login Footer */
+.login-footer {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.tulip-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.footer-tulip {
+    font-size: 1.5rem;
+    opacity: 0.5;
+    animation: sway 3s ease-in-out infinite;
+}
+
+.footer-text {
+    color: #b34e7a;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0 10px;
+}
+
+.copyright {
+    color: #ffb6c1;
+    font-size: 0.8rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .role-selector {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .role-option {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .role-emoji {
+        font-size: 1.8rem;
+        margin-bottom: 0;
+    }
+}
+</style>
+
+<script>
+function togglePassword(element) {
+    const input = element.parentElement.querySelector('.tulip-input');
+    input.type = input.type === 'password' ? 'text' : 'password';
+    element.textContent = input.type === 'password' ? '👁️' : '👁️‍🗨️';
+}
+
+// Auto-fill based on role selection (for demo purposes)
+document.addEventListener('DOMContentLoaded', function() {
+    const adminRadio = document.querySelector('input[value="admin"]');
+    const officialRadio = document.querySelector('input[value="official"]');
+    const usernameInput = document.querySelector('input[name="username"]');
+    const passwordInput = document.querySelector('input[name="password"]');
+
+    function updatePlaceholder() {
+        if (adminRadio.checked) {
+            usernameInput.placeholder = "Enter admin username";
+        } else {
+            usernameInput.placeholder = "Enter official username";
+        }
+    }
+
+    adminRadio.addEventListener('change', updatePlaceholder);
+    officialRadio.addEventListener('change', updatePlaceholder);
+
+    // Optional: Auto-fill demo credentials (for development)
+    /*
+    adminRadio.addEventListener('click', function() {
+        usernameInput.value = 'admin';
+        passwordInput.value = 'admin123';
+    });
+
+    officialRadio.addEventListener('click', function() {
+        usernameInput.value = 'captain';
+        passwordInput.value = 'captain123';
+    });
+    */
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,441 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Tulip Header -->
+<div class="tulip-header">
+    <div class="tulip-icon">🌷</div>
+    <h1 class="dashboard-title">Dashboard</h1>
+    <p class="welcome-text"></p>
+</div>
+
+<!-- Dashboard Cards with Tulip Elements -->
+<div class="d-flex flex-wrap justify-content-between">
+    <!-- Total Residents - Tulip Bed Card -->
+    <div class="dashboard-card card-total">
+        <div class="tulip-decoration">🌷</div>
+        <h5>Total Residents</h5>
+        <p class="card-number">{{ total_residents }}</p>
+        <div class="petal-decoration"></div>
+    </div>
+
+    <!-- Male Residents - Tulip Bud Card -->
+    <div class="dashboard-card card-male">
+        <div class="tulip-decoration">🌱</div>
+        <h5>Male Residents</h5>
+        <p class="card-number">{{ total_male }}</p>
+        <div class="petal-decoration"></div>
+    </div>
+
+    <!-- Female Residents - Blooming Tulip Card -->
+    <div class="dashboard-card card-female">
+        <div class="tulip-decoration">🌸</div>
+        <h5>Female Residents</h5>
+        <p class="card-number">{{ total_female }}</p>
+        <div class="petal-decoration"></div>
+    </div>
+</div>
+
+<!-- Total Families - Tulip Stem Style -->
+<div class="family-container">
+    <div class="tulip-stem">
+        <div class="family-content">
+            <span class="family-icon">🌷</span>
+            <p class="total-families">Total Families: <span>{{ total_families }}</span></p>
+        </div>
+        <div class="stem-line"></div>
+        <div class="leaf leaf-left"></div>
+        <div class="leaf leaf-right"></div>
+    </div>
+</div>
+
+<!-- Enhanced Tulip Petals Animation Container -->
+<div class="tulip-petals-container">
+    <div class="tulip-petals"></div>
+</div>
+
+<style>
+/* 🌷 Enhanced Pink Tulip Theme Styles */
+
+/* Header Styles */
+.tulip-header {
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    animation: fadeInDown 1s ease;
+}
+
+.tulip-icon {
+    font-size: 4rem;
+    animation: sway 3s ease-in-out infinite;
+    display: inline-block;
+}
+
+.dashboard-title {
+    color: #d44a8c;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 10px 0;
+    text-shadow: 2px 2px 4px rgba(212, 74, 140, 0.2);
+    font-family: 'Segoe UI', 'Brush Script MT', cursive;
+}
+
+.welcome-text {
+    color: #b34e7a;
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-top: -5px;
+}
+
+/* Enhanced Dashboard Cards */
+.dashboard-card {
+    width: 23%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 30% 30% 40% 40%;
+    text-align: center;
+    font-size: 1.2rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 25px rgba(214, 51, 132, 0.3);
+}
+
+/* Tulip Shape Cards */
+.dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.dashboard-card:hover::before {
+    opacity: 1;
+}
+
+/* Tulip Decoration Icons */
+.tulip-decoration {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.1));
+    animation: bounce 2s ease-in-out infinite;
+}
+
+/* Card Number */
+.card-number {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 10px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(45deg, #fff, #ffe6f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Petal Decoration */
+.petal-decoration {
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    box-shadow:
+        -5px -5px 0 rgba(255, 255, 255, 0.3),
+        -10px -10px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Card Gradient Colors - Enhanced */
+.card-total {
+    background: linear-gradient(145deg, #ff8daf, #ff4d8c);
+}
+
+.card-male {
+    background: linear-gradient(145deg, #ff9bb5, #ff5d95);
+}
+
+.card-female {
+    background: linear-gradient(145deg, #ffa5c0, #ff6d9e);
+}
+
+.card-other {
+    background: linear-gradient(145deg, #ffafc9, #ff7da7);
+}
+
+/* Hover Effect - Tulip Blooming */
+.dashboard-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 20px 30px rgba(214, 51, 132, 0.4);
+}
+
+/* Family Container - Tulip Stem Design */
+.family-container {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+    position: relative;
+}
+
+.tulip-stem {
+    position: relative;
+    width: 200px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.family-content {
+    background: linear-gradient(145deg, #ff8daf, #ff4d8c);
+    padding: 25px 40px;
+    border-radius: 50% 50% 30% 30%;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+    animation: gentleSway 4s ease-in-out infinite;
+    transform-origin: top center;
+}
+
+.family-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.total-families {
+    color: white;
+    font-size: 1.3rem;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.total-families span {
+    font-weight: bold;
+    font-size: 1.8rem;
+    display: block;
+    margin-top: 5px;
+}
+
+/* Tulip Stem Line */
+.stem-line {
+    width: 4px;
+    height: 80px;
+    background: linear-gradient(to bottom, #4caf50, #2e7d32);
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Tulip Leaves */
+.leaf {
+    position: absolute;
+    width: 30px;
+    height: 60px;
+    background: linear-gradient(145deg, #66bb6a, #43a047);
+    border-radius: 100% 0 100% 0;
+    bottom: 20px;
+    z-index: 0;
+}
+
+.leaf-left {
+    left: 30px;
+    transform: rotate(-20deg);
+    animation: leafWave 3s ease-in-out infinite;
+}
+
+.leaf-right {
+    right: 30px;
+    transform: rotate(70deg);
+    animation: leafWave 3s ease-in-out infinite reverse;
+}
+
+/* Enhanced Tulip Petals Animation */
+.tulip-petals-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.tulip-petals {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.tulip-petals span {
+    position: absolute;
+    display: block;
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle at 30% 30%, #ffb6c1, #ff69b4, #d44a8c);
+    opacity: 0.6;
+    border-radius: 80% 0 80% 0;
+    transform: rotate(45deg);
+    animation: fall 8s linear infinite;
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
+/* Random petal variations */
+.tulip-petals span:nth-child(odd) {
+    border-radius: 0 80% 0 80%;
+    transform: rotate(-45deg);
+    background: radial-gradient(circle at 70% 70%, #ffc0cb, #ff1493);
+}
+
+.tulip-petals span:nth-child(3n) {
+    width: 20px;
+    height: 30px;
+    border-radius: 50% 50% 0 0;
+    transform: rotate(0deg);
+}
+
+.tulip-petals span:nth-child(5n+2) {
+    animation-duration: 10s;
+    opacity: 0.4;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes gentleSway {
+    0%, 100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+}
+
+@keyframes leafWave {
+    0%, 100% { transform: rotate(-20deg) scale(1); }
+    50% { transform: rotate(-25deg) scale(1.05); }
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg) scale(1);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* Body Background Enhancement */
+body {
+    background: linear-gradient(135deg, #fff5f9, #ffeaf3, #ffe0f0);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-card {
+        width: 48%;
+    }
+
+    .dashboard-title {
+        font-size: 2rem;
+    }
+
+    .tulip-icon {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-card {
+        width: 100%;
+    }
+
+    .family-content {
+        padding: 20px 30px;
+    }
+
+    .total-families span {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
+<script>
+  // 🌷 Create floating petals on page load
+  document.addEventListener('DOMContentLoaded', function() {
+      const petalContainer = document.querySelector('.tulip-petals');
+      const petalCount = 30; // Number of petals to create
+      const petalEmojis = ['🌷', '🌸', '🌺', '🌱', '🍃'];
+
+      // Create petals
+      for (let i = 0; i < petalCount; i++) {
+          const petal = document.createElement('span');
+
+          // Random positioning
+          petal.style.left = Math.random() * 100 + 'vw';
+          petal.style.top = -Math.random() * 20 + 'vh';
+
+          // Random animation properties
+          petal.style.animationDelay = Math.random() * 15 + 's';
+          petal.style.animationDuration = 5 + Math.random() * 15 + 's';
+
+          // Random size
+          const size = 15 + Math.random() * 20;
+          petal.style.width = size + 'px';
+          petal.style.height = size * (0.8 + Math.random() * 0.4) + 'px';
+
+          // Random rotation start
+          petal.style.transform = `rotate(${Math.random() * 90}deg)`;
+
+          // Add to container
+          petalContainer.appendChild(petal);
+      }
+
+      // Add subtle floating animation to cards on page load
+      const cards = document.querySelectorAll('.dashboard-card');
+      cards.forEach((card, index) => {
+          card.style.animation = `fadeInDown 0.5s ease ${index * 0.1}s both`;
+      });
+  });
+</script>
+
+{% endblock %}

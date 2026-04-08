@@ -1,0 +1,395 @@
+{% extends "base_login.html" %}
+{% block content %}
+
+<div class="tulip-register-container">
+    <!-- Decorative Tulip Header -->
+    <div class="register-header">
+        <div class="tulip-garden-gate">
+            <span class="gate-tulip">🌷</span>
+            <span class="gate-icon">📝</span>
+            <span class="gate-tulip">🌸</span>
+        </div>
+        <h2 class="register-title">Barangay Official Registration</h2>
+        <p class="register-subtitle">Register as a Barangay Official</p>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="register-form-wrapper">
+        <form method="POST" class="tulip-register-form">
+            <!-- Personal Information -->
+            <div class="form-section">
+                <h3 class="section-title">👤 Personal Information</h3>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">📝</span>
+                        Full Name
+                    </label>
+                    <input type="text" name="full_name" class="tulip-input"
+                           placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">👑</span>
+                        Position
+                    </label>
+                    <select name="position" class="tulip-select" required>
+                        <option value="" disabled selected>Select your position</option>
+                        <option value="Barangay Captain">Barangay Captain</option>
+                        <option value="Barangay Secretary">Barangay Secretary</option>
+                        <option value="Barangay Treasurer">Barangay Treasurer</option>
+                        <option value="Barangay Councilor">Barangay Councilor</option>
+                        <option value="SK Chairman">SK Chairman</option>
+                        <option value="Barangay Kagawad">Barangay Kagawad</option>
+                        <option value="Barangay Tanod">Barangay Tanod</option>
+                        <option value="Barangay Health Worker">Barangay Health Worker</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Account Information -->
+            <div class="form-section">
+                <h3 class="section-title">🔐 Account Information</h3>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">👤</span>
+                        Username
+                    </label>
+                    <input type="text" name="username" class="tulip-input"
+                           placeholder="Choose a username" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label class="tulip-label">
+                            <span class="label-icon">🔑</span>
+                            Password
+                        </label>
+                        <input type="password" name="password" class="tulip-input"
+                               placeholder="Enter password" required id="password">
+                    </div>
+
+                    <div class="form-group half">
+                        <label class="tulip-label">
+                            <span class="label-icon">✓</span>
+                            Confirm Password
+                        </label>
+                        <input type="password" name="confirm_password" class="tulip-input"
+                               placeholder="Confirm password" required id="confirm_password">
+                    </div>
+                </div>
+                <div class="password-match" id="passwordMatch"></div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="form-section">
+                <h3 class="section-title">📞 Contact Information</h3>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">📱</span>
+                        Contact Number
+                    </label>
+                    <input type="tel" name="contact_number" class="tulip-input"
+                           placeholder="09123456789" pattern="[0-9]{11}"
+                           title="Please enter 11 digit number">
+                </div>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">📧</span>
+                        Email Address
+                    </label>
+                    <input type="email" name="email" class="tulip-input"
+                           placeholder="your.email@example.com">
+                </div>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="terms-section">
+                <label class="terms-checkbox">
+                    <input type="checkbox" required>
+                    <span class="checkmark"></span>
+                    <span class="terms-text">I confirm that the information provided is accurate and complete</span>
+                </label>
+            </div>
+
+            <!-- Form Buttons -->
+            <div class="form-actions">
+                <button type="reset" class="tulip-btn tulip-btn-secondary">
+                    <span class="btn-icon">🌱</span>
+                    Clear
+                </button>
+                <button type="submit" class="tulip-btn tulip-btn-primary">
+                    <span class="btn-icon">🌷</span>
+                    Register as Official
+                </button>
+            </div>
+        </form>
+
+        <!-- Login Link -->
+        <div class="login-link">
+            <p>Already have an account? <a href="/">Login here</a></p>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="tulip-alert tulip-alert-{{ category }}">
+                <span class="alert-icon">🌷</span>
+                <span class="alert-message">{{ message }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+</div>
+
+<style>
+/* 🌷 Registration Page Styles */
+.tulip-register-container {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    animation: fadeIn 0.8s ease;
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.register-title {
+    color: #d44a8c;
+    font-size: 2rem;
+    margin: 15px 0 5px;
+}
+
+.register-subtitle {
+    color: #b34e7a;
+    font-size: 1.1rem;
+}
+
+.register-form-wrapper {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 35px;
+    box-shadow: 0 20px 40px rgba(214, 51, 132, 0.2);
+    border: 3px solid rgba(255, 182, 193, 0.6);
+}
+
+.form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px dashed #ffb6c1;
+}
+
+.section-title {
+    color: #b34e7a;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    flex: 1;
+}
+
+.form-group.half {
+    flex: 1;
+}
+
+.tulip-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #b34e7a;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.tulip-input, .tulip-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ffb6c1;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.tulip-input:focus, .tulip-select:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.1);
+    outline: none;
+}
+
+.password-match {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    padding-left: 10px;
+}
+
+.password-match.valid {
+    color: #4caf50;
+}
+
+.password-match.invalid {
+    color: #f44336;
+}
+
+.terms-section {
+    margin: 25px 0;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    color: #b34e7a;
+}
+
+.terms-checkbox input {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 2px solid #ffb6c1;
+    border-radius: 5px;
+    position: relative;
+}
+
+.terms-checkbox input:checked ~ .checkmark {
+    background: linear-gradient(145deg, #ff8daf, #ff4d8c);
+    border-color: #ff69b4;
+}
+
+.terms-checkbox input:checked ~ .checkmark:after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.8rem;
+}
+
+.terms-text {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.tulip-btn {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tulip-btn-primary {
+    background: linear-gradient(145deg, #ff8daf, #ff4d8c);
+    color: white;
+}
+
+.tulip-btn-secondary {
+    background: white;
+    color: #b34e7a;
+    border: 2px solid #ffb6c1;
+}
+
+.tulip-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #b34e7a;
+}
+
+.login-link a {
+    color: #d44a8c;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .register-form-wrapper {
+        padding: 20px;
+    }
+}
+</style>
+
+<script>
+// Password matching validation
+document.addEventListener('DOMContentLoaded', function() {
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm_password');
+    const matchIndicator = document.getElementById('passwordMatch');
+
+    function checkPasswordMatch() {
+        if (confirmPassword.value === '') {
+            matchIndicator.textContent = '';
+            matchIndicator.className = 'password-match';
+        } else if (password.value === confirmPassword.value) {
+            matchIndicator.textContent = '✅ Passwords match';
+            matchIndicator.className = 'password-match valid';
+        } else {
+            matchIndicator.textContent = '❌ Passwords do not match';
+            matchIndicator.className = 'password-match invalid';
+        }
+    }
+
+    password.addEventListener('keyup', checkPasswordMatch);
+    confirmPassword.addEventListener('keyup', checkPasswordMatch);
+});
+</script>
+
+{% endblock %}
