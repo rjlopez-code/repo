@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Resident</h2>
+
+    <form method="POST" enctype="multipart/form-data" id="editResidentForm">
+        <input name="first" placeholder="First Name" class="form-control mb-2" required value="{{ r.first_name }}">
+        <input name="middle" placeholder="Middle Name" class="form-control mb-2" value="{{ r.middle_name }}">
+        <input name="last" placeholder="Last Name" class="form-control mb-2" required value="{{ r.last_name }}">
+        <input name="family" placeholder="Family ID" class="form-control mb-2" required value="{{ r.family_id }}">
+        <input name="purok" placeholder="Purok" class="form-control mb-2" value="{{ r.purok }}">
+        <input name="age" type="number" placeholder="Age" class="form-control mb-2" value="{{ r.age }}">
+        <input name="birthdate" type="date" placeholder="Birthdate" class="form-control mb-2" value="{{ r.birthdate }}">
+        <input name="relationship" placeholder="Relationship" class="form-control mb-2" value="{{ r.relationship }}">
+
+        <!-- Gender Dropdown -->
+        <select name="gender" class="form-control mb-2" required>
+            <option value="Male" {% if r.gender=='Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if r.gender=='Female' %}selected{% endif %}>Female</option>
+            <option value="Other" {% if r.gender=='Other' %}selected{% endif %}>Other</option>
+        </select>
+
+        <!-- Photo -->
+        <label>Upload New Photo (Optional)</label>
+        {% if r.photo %}
+        <div class="mb-2">
+            <img src="{{ url_for('static', filename='uploads/'+r.photo) }}" width="100" class="img-thumbnail">
+        </div>
+        {% endif %}
+        <input type="file" name="photo" class="form-control mb-3">
+
+        <button type="submit" class="btn btn-success" id="updateBtn">
+            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true" id="loadingSpinner"></span>
+            Update
+        </button>
+        <a href="{{ url_for('search') }}" class="btn btn-secondary" id="cancelBtn">Cancel</a>
+    </form>
+</div>
+
+<!-- SweetAlert2 CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+    .swal-title-pink {
+        color: #d44a8c !important;
+    }
+    .swal-popup-tulip {
+        border: 3px solid #ffb6c1 !important;
+        border-radius: 30px !important;
+        box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3) !important;
+    }
+    .swal2-confirm {
+        border-radius: 50px !important;
+        padding: 10px 25px !important;
+    }
+    .swal2-cancel {
+        border-radius: 50px !important;
+        padding: 10px 25px !important;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editForm = document.getElementById('editResidentForm');
+    const updateBtn = document.getElementById('updateBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const cancelBtn = document.getElementById('cancelBtn');
+
+    // Check for flash messages on page load
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'success' %}
+                    Swal.fire({
+                        title: '🌸 Update Successful!',
+                        text: '{{ message }}',
+                        icon: 'success',
+                        confirmButtonColor: '#ff69b4',
+                        confirmButtonText: '🌷 Continue',
+                        background: '#fff0f5',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        customClass: {
+                            title: 'swal-title-pink',
+                            popup: 'swal-popup-tulip'
+                        },
+                        backdrop: `
+                            rgba(255,182,193,0.4)
+                            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ctext x='0' y='30' font-size='30'%3E🌷%3C/text%3E%3C/svg%3E")
+                            left top
+                            repeat
+                        `
+                    }).then((result) => {
+                        window.location.href = "{{ url_for('search') }}";
+                    });
+                {% elif category == 'danger' or category == 'error' %}
+                    Swal.fire({
+                        title: '🌷 Update Failed',
+                        text: '{{ message }}',
+                        icon: 'error',
+                        confirmButtonColor: '#ff4d8c',
+                        confirmButtonText: 'Try Again',
+                        background: '#fff0f5',
+                        customClass: {
+                            title: 'swal-title-pink',
+                            popup: 'swal-popup-tulip'
+                        },
+                        backdrop: `
+                            rgba(255,77,140,0.3)
+                            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ctext x='0' y='30' font-size='30'%3E🌷%3C/text%3E%3C/svg%3E")
+                            left top
+                            repeat
+                        `
+                    });
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    // Form submission with confirmation
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const firstName = document.querySelector('input[name="first"]').value;
+            const lastName = document.querySelector('input[name="last"]').value;
+            const residentName = firstName + ' ' + lastName;
+
+            Swal.fire({
+                title: 'Update Resident?',
+                html: `Are you sure you want to update <strong>${residentName}</strong>'s information?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#ff69b4',
+                cancelButtonColor: '#b34e7a',
+                confirmButtonText: '🌷 Yes, Update',
+                cancelButtonText: '🌸 Cancel',
+                background: '#fff0f5',
+                customClass: {
+                    title: 'swal-title-pink',
+                    popup: 'swal-popup-tulip'
+                },
+                backdrop: `
+                    rgba(255,182,193,0.4)
+                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ctext x='0' y='30' font-size='30'%3E🌷%3C/text%3E%3C/svg%3E")
+                    left top
+                    repeat
+                `
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show loading state on button
+                    updateBtn.disabled = true;
+                    loadingSpinner.classList.remove('d-none');
+
+                    // Submit the form
+                    editForm.submit();
+                }
+            });
+        });
+    }
+
+    // Cancel button confirmation
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const href = this.href;
+
+            Swal.fire({
+                title: 'Cancel Editing?',
+                text: 'Any unsaved changes will be lost.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff69b4',
+                cancelButtonColor: '#b34e7a',
+                confirmButtonText: '🌷 Yes, Cancel',
+                cancelButtonText: '🌸 No, Continue Editing',
+                background: '#fff0f5',
+                customClass: {
+                    title: 'swal-title-pink',
+                    popup: 'swal-popup-tulip'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = href;
+                }
+            });
+        });
+    }
+
+    // Optional: Show preview when selecting new photo
+    const photoInput = document.querySelector('input[name="photo"]');
+    if (photoInput) {
+        photoInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                Swal.fire({
+                    title: 'Photo Selected',
+                    html: `You selected: <strong>${fileName}</strong><br><br>This will replace the current photo when you update.`,
+                    icon: 'info',
+                    confirmButtonColor: '#ff69b4',
+                    confirmButtonText: 'OK',
+                    background: '#fff0f5',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    customClass: {
+                        popup: 'swal-popup-tulip'
+                    }
+                });
+            }
+        });
+    }
+
+    // Auto-calculate age when birthdate changes
+    const birthdateInput = document.querySelector('input[name="birthdate"]');
+    const ageInput = document.querySelector('input[name="age"]');
+
+    if (birthdateInput && ageInput) {
+        birthdateInput.addEventListener('change', function() {
+            if (this.value) {
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                if (age >= 0 && age < 150) {
+                    ageInput.value = age;
+                }
+            }
+        });
+    }
+});
+
+// Add custom SweetAlert styles
+const style = document.createElement('style');
+style.textContent = `
+    .swal-title-pink {
+        color: #d44a8c !important;
+        font-family: 'Segoe UI', cursive !important;
+    }
+    .swal-popup-tulip {
+        border: 3px solid #ffb6c1 !important;
+        border-radius: 30px !important;
+        box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3) !important;
+    }
+    .swal2-confirm {
+        border-radius: 50px !important;
+        padding: 12px 30px !important;
+        font-weight: 600 !important;
+    }
+    .swal2-cancel {
+        border-radius: 50px !important;
+        padding: 12px 30px !important;
+        font-weight: 600 !important;
+    }
+    .swal2-popup {
+        font-size: 1.1rem !important;
+    }
+    .swal2-timer-progress-bar {
+        background: #ff69b4 !important;
+    }
+    .btn-success {
+        background: linear-gradient(145deg, #ff8daf, #ff4d8c);
+        border-color: #ff69b4;
+    }
+    .btn-success:hover {
+        background: linear-gradient(145deg, #ff4d8c, #ff8daf);
+        border-color: #ff4d8c;
+    }
+`;
+document.head.appendChild(style);
+</script>
+
+{% endblock %}

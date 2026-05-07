@@ -1,0 +1,1033 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- SweetAlert2 CSS and JS (add to base.html if not already there) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="tulip-form-container">
+    <!-- Decorative Tulip Header -->
+    <div class="form-header">
+        <div class="tulip-bouquet">
+            <span class="tulip-icon">🌷</span>
+            <span class="tulip-icon">🌸</span>
+            <span class="tulip-icon">🌷</span>
+        </div>
+        <h2 class="form-title">Add New Resident</h2>
+
+    </div>
+
+    <!-- Tulip Inspired Form -->
+    <form method="POST" enctype="multipart/form-data" class="tulip-form" id="residentForm">
+        <!-- Personal Information Section -->
+        <div class="form-section">
+            <div class="section-header">
+                <span class="petal-icon">🌸</span>
+                <h3>Personal Information</h3>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">🌷</span>
+                        First Name
+                    </label>
+                    <input type="text" name="first" id="firstName" placeholder="e.g., Maria" class="tulip-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">🌱</span>
+                        Middle Name
+                    </label>
+                    <input type="text" name="middle" id="middleName" placeholder="e.g., Santos" class="tulip-input">
+                </div>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">🌺</span>
+                        Last Name
+                    </label>
+                    <input type="text" name="last" id="lastName" placeholder="e.g., Dela Cruz" class="tulip-input" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Residence Information Section -->
+        <div class="form-section">
+            <div class="section-header">
+                <span class="petal-icon">🏠</span>
+                <h3>Residence Information</h3>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">🏷️</span>
+                        Family ID
+                    </label>
+                    <input type="text" name="family" id="familyId" placeholder="e.g., FAM-2024-001" class="tulip-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">📍</span>
+                        Purok
+                    </label>
+                    <input type="text" name="purok" id="purok" placeholder="e.g., Purok 3" class="tulip-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- Demographics Section -->
+        <div class="form-section">
+            <div class="section-header">
+                <span class="petal-icon">📊</span>
+                <h3>Demographics</h3>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">🎂</span>
+                        Birthdate
+                    </label>
+                    <input type="date" name="birthdate" id="birthdate" class="tulip-input">
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                      <label class="tulip-label">
+                          <span class="label-icon">🎂</span>
+                          Age
+                      </label>
+                      <input type="number" name="age" placeholder="" class="tulip-input">
+                  </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="tulip-label">
+                        <span class="label-icon">👤</span>
+                        Relationship to Head
+                    </label>
+                    <input type="text" name="relationship" id="relationship" placeholder="e.g., Daughter, Son, Spouse" class="tulip-input">
+                </div>
+            </div>
+
+            <!-- Gender Selection with Tulip Theme -->
+            <div class="form-group">
+                <label class="tulip-label">
+                    <span class="label-icon">⚥</span>
+                    Gender
+                </label>
+                <div class="gender-select-wrapper">
+                    <select name="gender" id="gender" class="tulip-select" required>
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="Male">👨 Male</option>
+                        <option value="Female">👩 Female</option>
+                    </select>
+                    <span class="select-arrow">🌷</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Photo Upload Section -->
+        <div class="form-section photo-section">
+            <div class="section-header">
+                <span class="petal-icon">📸</span>
+                <h3>Resident Photo</h3>
+            </div>
+
+            <div class="photo-upload-container">
+                <div class="tulip-photo-frame" id="photoFrame">
+                    <div class="photo-preview" id="photoPreview">
+                        <span class="upload-placeholder">🌷</span>
+                        <p class="upload-text">Click to upload photo</p>
+                    </div>
+                </div>
+                <div class="upload-controls">
+                    <label for="photo-upload" class="tulip-upload-btn">
+                        <span class="btn-icon">📷</span>
+                        Choose Photo
+                    </label>
+                    <input type="file" id="photo-upload" name="photo" accept="image/*" class="hidden-input">
+                    <span class="file-name" id="fileName">No file chosen</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button type="button" class="tulip-btn tulip-btn-secondary" id="clearBtn">
+                <span class="btn-icon">🌱</span>
+                Clear Form
+            </button>
+            <button type="submit" class="tulip-btn tulip-btn-primary" id="submitBtn">
+                <span class="btn-icon">🌷</span>
+                Save Resident
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Decorative Tulip Petals -->
+<div class="form-petals"></div>
+
+<style>
+/* 🌷 Pink Tulip Theme for Add Resident Form */
+
+/* Main Container */
+.tulip-form-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Form Header */
+.form-header {
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeInDown 0.8s ease;
+}
+
+.tulip-bouquet {
+    margin-bottom: 15px;
+}
+
+.tulip-bouquet .tulip-icon {
+    font-size: 2.5rem;
+    margin: 0 5px;
+    display: inline-block;
+    animation: sway 3s ease-in-out infinite;
+}
+
+.tulip-bouquet .tulip-icon:nth-child(2) {
+    animation-delay: 0.2s;
+    font-size: 3rem;
+}
+
+.form-title {
+    color: #d44a8c;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin: 10px 0;
+    text-shadow: 2px 2px 4px rgba(212, 74, 140, 0.2);
+    font-family: 'Segoe UI', 'Brush Script MT', cursive;
+}
+
+.form-subtitle {
+    color: #b34e7a;
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-top: -5px;
+}
+
+/* Tulip Form */
+.tulip-form {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 40px 40px 30px 30px;
+    padding: 30px;
+    box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2);
+    border: 2px solid rgba(255, 182, 193, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Form Sections */
+.form-section {
+    background: rgba(255, 240, 245, 0.7);
+    border-radius: 30px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 182, 193, 0.5);
+    transition: all 0.3s ease;
+}
+
+.form-section:hover {
+    box-shadow: 0 5px 20px rgba(255, 105, 180, 0.2);
+    transform: translateY(-2px);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ffb6c1;
+    padding-bottom: 10px;
+}
+
+.section-header h3 {
+    color: #b34e7a;
+    font-size: 1.3rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.petal-icon {
+    font-size: 1.8rem;
+    margin-right: 10px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+/* Form Rows and Groups */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Tulip Labels */
+.tulip-label {
+    display: flex;
+    align-items: center;
+    color: #b34e7a;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.label-icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+/* Tulip Input Fields */
+.tulip-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ffb6c1;
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    outline: none;
+}
+
+.tulip-input:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.1);
+    transform: scale(1.02);
+}
+
+.tulip-input::placeholder {
+    color: #ffb6c1;
+    font-style: italic;
+}
+
+/* Gender Select Styling */
+.gender-select-wrapper {
+    position: relative;
+}
+
+.tulip-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ffb6c1;
+    border-radius: 25px;
+    font-size: 1rem;
+    background: white;
+    cursor: pointer;
+    appearance: none;
+    outline: none;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+/* Photo Upload Section */
+.photo-section {
+    background: linear-gradient(145deg, #fff0f5, #ffe4ec);
+}
+
+.photo-upload-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.tulip-photo-frame {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(145deg, #ffb6c1, #ff69b4);
+    border-radius: 50% 50% 30% 30%;
+    padding: 5px;
+    box-shadow: 0 10px 20px rgba(255, 105, 180, 0.3);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tulip-photo-frame:hover {
+    transform: scale(1.05);
+}
+
+.tulip-photo-frame::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shine 3s infinite;
+}
+
+.photo-preview {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 50% 50% 25% 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-placeholder {
+    font-size: 3rem;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.upload-text {
+    color: #b34e7a;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.upload-controls {
+    flex: 1;
+}
+
+.tulip-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    background: linear-gradient(145deg, #ffb6c1, #ff69b4);
+    color: white;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid white;
+}
+
+.tulip-upload-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+}
+
+.btn-icon {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.file-name {
+    margin-left: 15px;
+    color: #b34e7a;
+    font-style: italic;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px dashed #ffb6c1;
+}
+
+.tulip-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid transparent;
+}
+
+.tulip-btn-primary {
+    background: linear-gradient(145deg, #ff8daf, #ff4d8c);
+    color: white;
+    box-shadow: 0 5px 15px rgba(255, 77, 140, 0.3);
+}
+
+.tulip-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 77, 140, 0.4);
+    border-color: white;
+}
+
+.tulip-btn-secondary {
+    background: white;
+    color: #b34e7a;
+    border: 2px solid #ffb6c1;
+}
+
+.tulip-btn-secondary:hover {
+    background: #fff0f5;
+    transform: translateY(-2px);
+}
+
+/* Decorative Petals */
+.form-petals {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.form-petals::before,
+.form-petals::after {
+    content: '🌷';
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: float 20s linear infinite;
+}
+
+.form-petals::before {
+    top: 10%;
+    left: 5%;
+    animation-delay: -5s;
+}
+
+.form-petals::after {
+    bottom: 20%;
+    right: 5%;
+    animation: float 18s linear infinite reverse;
+}
+
+/* ===== SWEETALERT TULIP THEME ===== */
+.tulip-swal-popup {
+    border: 3px solid #ffb6c1 !important;
+    border-radius: 30px !important;
+    font-family: 'Segoe UI', Arial, sans-serif !important;
+    box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3) !important;
+}
+
+.tulip-swal-title {
+    color: #d44a8c !important;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+    margin-top: 15px !important;
+}
+
+.tulip-swal-text {
+    color: #b34e7a !important;
+    font-size: 1.1rem !important;
+    margin: 10px 0 !important;
+}
+
+.swal2-title {
+    color: #d44a8c !important;
+    font-size: 1.5rem !important;
+}
+
+.swal2-html-container {
+    color: #b34e7a !important;
+}
+
+.swal2-confirm {
+    background: linear-gradient(145deg, #ff8daf, #ff4d8c) !important;
+    border-radius: 50px !important;
+    padding: 12px 30px !important;
+    border: 2px solid white !important;
+    font-weight: 600 !important;
+    box-shadow: 0 5px 15px rgba(255, 77, 140, 0.3) !important;
+}
+
+.swal2-cancel {
+    background: white !important;
+    color: #b34e7a !important;
+    border-radius: 50px !important;
+    padding: 12px 30px !important;
+    border: 2px solid #ffb6c1 !important;
+    font-weight: 600 !important;
+}
+
+.swal2-confirm:hover,
+.swal2-cancel:hover {
+    transform: translateY(-2px) !important;
+}
+
+.swal2-icon {
+    border-color: #ffb6c1 !important;
+    color: #ff69b4 !important;
+}
+
+.swal2-success-ring {
+    border-color: #ffb6c1 !important;
+}
+
+.swal2-success-line-tip,
+.swal2-success-line-long {
+    background-color: #ff69b4 !important;
+}
+
+.swal2-timer-progress-bar {
+    background: linear-gradient(90deg, #ffb6c1, #ff69b4) !important;
+}
+
+/* Validation Error Animation */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.input-error {
+    animation: shake 0.3s ease-in-out;
+    border-color: #ff4d8c !important;
+    box-shadow: 0 0 0 3px rgba(255, 77, 140, 0.3) !important;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) rotate(45deg); }
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-100px) rotate(180deg);
+        opacity: 0.1;
+    }
+    100% {
+        transform: translateY(-200px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tulip-form {
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .photo-upload-container {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .tulip-btn {
+        width: 100%;
+    }
+
+    .form-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tulip-form-container {
+        padding: 10px;
+    }
+
+    .form-section {
+        padding: 15px;
+    }
+}
+
+/* Background Enhancement */
+body {
+    background: linear-gradient(135deg, #fff5f9, #ffeaf3, #ffe0f0);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: auto;
+}
+
+/* Live Preview for Photo Upload */
+.tulip-photo-frame.has-image .photo-preview {
+    background-size: cover;
+    background-position: center;
+}
+
+.tulip-photo-frame.has-image .upload-placeholder,
+.tulip-photo-frame.has-image .upload-text {
+    display: none;
+}
+</style>
+
+<script>
+// Wait for SweetAlert to load
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if Swal is available
+    if (typeof Swal === 'undefined') {
+        console.error('SweetAlert2 is not loaded. Please check your internet connection.');
+        return;
+    }
+
+    // Initialize variables
+    const form = document.getElementById('residentForm');
+    const photoUpload = document.getElementById('photo-upload');
+    const fileName = document.getElementById('fileName');
+    const photoFrame = document.querySelector('.tulip-photo-frame');
+    const photoPreview = document.querySelector('.photo-preview');
+    const clearBtn = document.getElementById('clearBtn');
+    const birthdateInput = document.getElementById('birthdate');
+    const ageInput = document.getElementById('age');
+
+    // 🌷 Auto-compute age from birthdate
+    if (birthdateInput) {
+        birthdateInput.addEventListener('change', function() {
+            if (this.value) {
+                const birthDate = new Date(this.value);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+
+                ageInput.value = age >= 0 ? age : '';
+            }
+        });
+    }
+
+    // 🌷 Photo Upload Preview
+    if (photoUpload) {
+        photoUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            fileName.textContent = file ? file.name : 'No file chosen';
+
+            if (file) {
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    Swal.fire({
+                        title: 'File Too Large',
+                        text: 'Please upload an image smaller than 5MB.',
+                        icon: 'error',
+                        confirmButtonText: '🌷 OK',
+                        customClass: {
+                            popup: 'tulip-swal-popup'
+                        }
+                    });
+                    photoUpload.value = '';
+                    fileName.textContent = 'No file chosen';
+                    return;
+                }
+
+                // Check file type
+                if (!file.type.startsWith('image/')) {
+                    Swal.fire({
+                        title: 'Invalid File',
+                        text: 'Please upload an image file.',
+                        icon: 'error',
+                        confirmButtonText: '🌷 OK',
+                        customClass: {
+                            popup: 'tulip-swal-popup'
+                        }
+                    });
+                    photoUpload.value = '';
+                    fileName.textContent = 'No file chosen';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photoPreview.style.backgroundImage = `url('${e.target.result}')`;
+                    photoPreview.style.backgroundSize = 'cover';
+                    photoPreview.style.backgroundPosition = 'center';
+                    photoFrame.classList.add('has-image');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                // Reset preview if no file
+                photoPreview.style.backgroundImage = '';
+                photoFrame.classList.remove('has-image');
+            }
+        });
+    }
+
+    // 🌷 Click on photo frame to trigger file upload
+    if (photoFrame) {
+        photoFrame.addEventListener('click', function() {
+            photoUpload.click();
+        });
+    }
+
+    // 🌷 Form Submission with Validation
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const firstName = document.getElementById('firstName')?.value.trim();
+            const lastName = document.getElementById('lastName')?.value.trim();
+            const familyId = document.getElementById('familyId')?.value.trim();
+            const gender = document.getElementById('gender')?.value;
+
+            // Validation
+            let hasError = false;
+            const requiredFields = [
+                { field: firstName, name: 'First Name', id: 'firstName' },
+                { field: lastName, name: 'Last Name', id: 'lastName' },
+                { field: familyId, name: 'Family ID', id: 'familyId' },
+                { field: gender, name: 'Gender', id: 'gender' }
+            ];
+
+            // Remove previous error styling
+            document.querySelectorAll('.input-error').forEach(el => {
+                el.classList.remove('input-error');
+            });
+
+            // Check required fields
+            for (let item of requiredFields) {
+                if (!item.field) {
+                    const element = document.getElementById(item.id);
+                    if (element) {
+                        element.classList.add('input-error');
+                        element.focus();
+                    }
+                    hasError = true;
+
+                    Swal.fire({
+                        title: 'Missing Information',
+                        text: `Please fill in the ${item.name} field.`,
+                        icon: 'warning',
+                        confirmButtonText: '🌷 OK',
+                        customClass: {
+                            popup: 'tulip-swal-popup'
+                        }
+                    });
+                    break;
+                }
+            }
+
+            if (!hasError) {
+                // Show confirmation dialog
+                Swal.fire({
+                    title: 'Save New Resident?',
+                    html: `
+                        <div class="tulip-swal-text">
+                            <p>Add <strong>${firstName} ${lastName}</strong> to the community?</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">Family ID: ${familyId}</p>
+                        </div>
+                    `,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: '🌷 Yes, save it!',
+                    cancelButtonText: '🌸 Cancel',
+                    background: '#fff5f9',
+                    backdrop: `
+                        rgba(255,105,180,0.2)
+                        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='52' viewBox='0 0 52 52'%3E%3Cpath fill='%23ff69b4' opacity='0.2' d='M26,2 L32,18 L50,18 L36,30 L42,46 L26,36 L10,46 L16,30 L2,18 L20,18 L26,2 Z'/%3E%3C/svg%3E")
+                        left top repeat
+                    `,
+                    customClass: {
+                        popup: 'tulip-swal-popup',
+                        title: 'tulip-swal-title'
+                    },
+                    preConfirm: () => {
+                        return new Promise((resolve) => {
+                            // Show loading state
+                            Swal.showLoading();
+
+                            // Simulate slight delay for better UX
+                            setTimeout(() => {
+                                resolve();
+                            }, 500);
+                        });
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit the form
+                        form.submit();
+
+                        // Show success message (will show if page doesn't redirect immediately)
+                        Swal.fire({
+                            title: 'Saved Successfully!',
+                            html: `
+                                <div class="tulip-swal-text">
+                                    <p>🌷 ${firstName} ${lastName} has been added to the garden.</p>
+                                    <p style="font-size: 0.9rem; margin-top: 10px;">A new flower blooms in our community!</p>
+                                </div>
+                            `,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            background: '#fff5f9',
+                            customClass: {
+                                popup: 'tulip-swal-popup'
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // 🌷 Clear Form Button
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Clear Form?',
+                text: 'All entered data will be lost. This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ff69b4',
+                cancelButtonColor: '#b34e7a',
+                confirmButtonText: '🌷 Yes, clear everything',
+                cancelButtonText: '🌸 No, keep it',
+                background: '#fff5f9',
+                customClass: {
+                    popup: 'tulip-swal-popup'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Reset form
+                    form.reset();
+
+                    // Reset photo preview
+                    photoPreview.style.backgroundImage = '';
+                    photoPreview.style.backgroundSize = '';
+                    photoPreview.style.backgroundPosition = '';
+                    photoFrame.classList.remove('has-image');
+                    fileName.textContent = 'No file chosen';
+
+                    // Remove any error styling
+                    document.querySelectorAll('.input-error').forEach(el => {
+                        el.classList.remove('input-error');
+                    });
+
+                    // Show success message
+                    Swal.fire({
+                        title: 'Form Cleared!',
+                        text: 'The form has been reset. Ready for new input.',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        background: '#fff5f9',
+                        customClass: {
+                            popup: 'tulip-swal-popup'
+                        }
+                    });
+                }
+            });
+        });
+    }
+
+    // 🌷 Add floating tulips dynamically
+    const petalContainer = document.querySelector('.form-petals');
+    if (petalContainer) {
+        for (let i = 0; i < 8; i++) {
+            const tulip = document.createElement('div');
+            tulip.innerHTML = ['🌷', '🌸', '🌺'][Math.floor(Math.random() * 3)];
+            tulip.style.position = 'absolute';
+            tulip.style.left = Math.random() * 100 + '%';
+            tulip.style.top = Math.random() * 100 + '%';
+            tulip.style.animation = `float ${15 + Math.random() * 15}s linear infinite`;
+            tulip.style.fontSize = (1 + Math.random() * 2.5) + 'rem';
+            tulip.style.opacity = '0.15';
+            tulip.style.transform = `rotate(${Math.random() * 360}deg)`;
+            tulip.style.animationDelay = `${Math.random() * 10}s`;
+            petalContainer.appendChild(tulip);
+        }
+    }
+
+    // 🌷 Animate sections on load
+    const sections = document.querySelectorAll('.form-section');
+    sections.forEach((section, index) => {
+        section.style.animation = `fadeInDown 0.5s ease ${index * 0.1}s both`;
+    });
+
+    // 🌷 Welcome message (only once per session)
+    if (!sessionStorage.getItem('tulipWelcomeShown')) {
+        setTimeout(() => {
+            Swal.fire({
+                title: 'Welcome to the BIMS! 🌷',
+                text: 'Add a new resident to our blooming community.',
+                icon: 'info',
+                confirmButtonText: '🌸 Let\'s begin',
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#fff5f9',
+                customClass: {
+                    popup: 'tulip-swal-popup'
+                }
+            });
+            sessionStorage.setItem('tulipWelcomeShown', 'true');
+        }, 500);
+    }
+});
+
+// 🌷 Error handling for SweetAlert not loading
+window.addEventListener('error', function(e) {
+    if (e.target.tagName === 'SCRIPT' && e.target.src.includes('sweetalert')) {
+        console.error('SweetAlert failed to load. Please check your internet connection.');
+        alert('Some features may not work properly. Please check your internet connection.');
+    }
+});
+</script>
+
+{% endblock %}

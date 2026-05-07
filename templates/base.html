@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Barangay Tulip Garden System</title>
+    <link rel="stylesheet"
+     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+     <!-- SweetAlert2 CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+    /* 🌷 Pink Tulip Theme Styles - Same Layout, Tulip Design */
+
+    body {
+        background: linear-gradient(135deg, #fff5f9, #ffeaf3, #ffe0f0);
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    /* Banner Image with Tulip Border */
+    img {
+        border-bottom: 5px solid #ff69b4;
+        position: relative;
+    }
+
+    /* Tulip decoration sa banner */
+    .banner-container {
+        position: relative;
+    }
+
+    .banner-container::before,
+    .banner-container::after {
+        content: '🌷';
+        position: absolute;
+        font-size: 2rem;
+        bottom: 10px;
+        z-index: 10;
+        animation: sway 3s ease-in-out infinite;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .banner-container::before {
+        left: 20px;
+        transform: rotate(-10deg);
+    }
+
+    .banner-container::after {
+        right: 20px;
+        transform: rotate(10deg);
+        animation-delay: 0.5s;
+    }
+
+    /* Tulip Themed Buttons - Same classes pero tulip colors */
+    .btn {
+        border-radius: 50px;
+        margin: 5px;
+        font-weight: 500;
+        transition: transform 0.2s, box-shadow 0.2s;
+        border: 2px solid white !important;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '🌷';
+        position: absolute;
+        left: -20px;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0;
+        transition: all 0.3s;
+        font-size: 1.2rem;
+    }
+
+    .btn:hover::before {
+        left: 10px;
+        opacity: 0.5;
+    }
+
+    .btn:hover {
+        padding-left: 35px !important;
+    }
+
+    /* Dashboard Button - Tulip Pink */
+    .btn-success {
+        background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+        border: none;
+        color: white;
+    }
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+    }
+
+    /* Search Button - Light Tulip */
+    .btn-info {
+        background: linear-gradient(135deg, #ffc0cb, #ff8daf);
+        border: none;
+        color: white;
+    }
+    .btn-info:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+    }
+
+    /* Change Password Button - Soft Tulip */
+    .btn-warning {
+        background: linear-gradient(135deg, #ffd1dc, #ff99b6);
+        border: none;
+        color: white;
+    }
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+    }
+
+    /* Logout Button - Dark Tulip */
+    .btn-danger {
+        background: linear-gradient(135deg, #ff8daf, #ff4d8c);
+        border: none;
+        color: white;
+    }
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+    }
+
+    /* Manage Users Button - Tulip Primary */
+    .btn-primary {
+        background: linear-gradient(135deg, #ff8daf, #ff4d8c);
+        border: none;
+        color: white;
+    }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+    }
+
+    /* Approve Officials Button - Tulip Secondary */
+    .btn-secondary {
+        background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+        border: none;
+        color: white;
+    }
+    .btn-secondary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(255,105,180,0.4);
+    }
+
+    /* Flash Messages - Tulip Style */
+    .alert-info {
+        background: linear-gradient(135deg, #fff0f5, #ffe6f0);
+        color: #b34e7a;
+        border-left: 5px solid #ff69b4;
+        border-radius: 12px;
+        position: relative;
+        padding-left: 45px;
+    }
+
+    .alert-info::before {
+        content: '🌷';
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.3rem;
+    }
+
+    .container {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Floating Tulip Petals - Replacement for hearts */
+    .tulip-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .tulip-petal {
+        position: absolute;
+        font-size: 20px;
+        animation-name: fallTulip;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+        opacity: 0.3;
+    }
+
+    @keyframes fallTulip {
+        0% {
+            transform: translateY(-50px) translateX(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 0.5;
+        }
+        25% {
+            transform: translateY(25vh) translateX(-10px) rotate(15deg);
+        }
+        50% {
+            transform: translateY(50vh) translateX(10px) rotate(-10deg);
+        }
+        75% {
+            transform: translateY(75vh) translateX(-10px) rotate(10deg);
+        }
+        100% {
+            transform: translateY(110vh) translateX(0) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    /* Title enhancements */
+    h1, h2, h3, h4, h5 {
+        color: #b34e7a;
+        position: relative;
+        display: inline-block;
+    }
+
+    h2::before, h2::after {
+        content: '🌷';
+        font-size: 1.5rem;
+        margin: 0 10px;
+        opacity: 0.5;
+        animation: sway 3s ease-in-out infinite;
+    }
+
+    h2::before {
+        margin-right: 10px;
+    }
+
+    h2::after {
+        margin-left: 10px;
+        animation-delay: 0.5s;
+    }
+
+    /* Table enhancements */
+    table {
+        border-collapse: separate;
+        border-spacing: 0 5px;
+    }
+
+    table thead th {
+        background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+        color: white;
+        border: none !important;
+        padding: 12px !important;
+    }
+
+    table tbody tr {
+        background: white;
+        box-shadow: 0 2px 8px rgba(255,105,180,0.1);
+        transition: all 0.3s;
+    }
+
+    table tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255,105,180,0.2);
+    }
+
+    table tbody td {
+        padding: 12px !important;
+        border: none !important;
+        vertical-align: middle;
+    }
+
+    /* Form enhancements */
+    .form-control {
+        border: 2px solid #ffb6c1;
+        border-radius: 50px;
+        padding: 12px 20px;
+        transition: all 0.3s;
+    }
+
+    .form-control:focus {
+        border-color: #ff69b4;
+        box-shadow: 0 0 0 3px rgba(255,105,180,0.2);
+        outline: none;
+    }
+
+    label {
+        color: #b34e7a;
+        font-weight: 500;
+        margin-left: 10px;
+    }
+
+    /* User Badge Styles */
+    .user-badge {
+        display: inline-block;
+        padding: 8px 15px;
+        background: linear-gradient(145deg, #ffb6c1, #ff69b4);
+        color: white;
+        border-radius: 50px;
+        margin-left: 10px;
+        font-size: 0.9rem;
+        border: 2px solid white;
+        box-shadow: 0 2px 5px rgba(255,105,180,0.3);
+        animation: fadeIn 0.5s ease;
+    }
+
+    .badge-icon {
+        margin-right: 5px;
+        font-size: 1rem;
+    }
+
+    .role-badge {
+        background: rgba(255,255,255,0.3);
+        padding: 3px 8px;
+        border-radius: 30px;
+        margin-left: 8px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    /* Navigation container for better spacing */
+    .navigation-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+        border-radius: 60px;
+        margin: 15px auto;
+        max-width: 1200px;
+    }
+
+    /* Animations */
+    @keyframes sway {
+        0%, 100% { transform: rotate(-5deg); }
+        50% { transform: rotate(5deg); }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        h2::before, h2::after {
+            display: none;
+        }
+
+        .banner-container::before,
+        .banner-container::after {
+            font-size: 1.5rem;
+        }
+
+        .navigation-wrapper {
+            flex-direction: column;
+            border-radius: 30px;
+        }
+
+        .user-badge {
+            margin-left: 0;
+            margin-top: 5px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .btn {
+            width: 100%;
+            margin: 2px 0;
+        }
+    }
+    </style>
+</head>
+
+<body>
+
+<div class="banner-container">
+    <img src="{{ url_for('static', filename='banner.jpg') }}"
+         class="img-fluid w-100" style="height:200px;object-fit:cover;">
+</div>
+
+<!-- Updated Navigation with Profile Link and Admin Links -->
+<div class="text-center mt-3">
+    <div class="navigation-wrapper">
+        <a href="/dashboard" class="btn btn-success">Dashboard</a>
+        <a href="/add" class="btn btn-success">Add Resident</a>
+        <a href="/search" class="btn btn-info">View All Resident</a>
+
+
+
+        <a href="/profile" class="btn btn-info">Profile</a>
+        <a href="/change_password" class="btn btn-warning">Change Password</a>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+
+        <!-- User info badge -->
+        <span class="user-badge">
+            <span class="badge-icon">
+                {% if session.role == 'admin' %}👑{% else %}👤{% endif %}
+            </span>
+            <span>{{ session.full_name or session.username }}</span>
+            <span class="role-badge">{{ session.position or session.role|upper }}</span>
+        </span>
+    </div>
+</div>
+
+<div class="container mt-4">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Tulip Petals Background -->
+<div class="tulip-container"></div>
+
+<script>
+// 🌷 Generate Floating Tulip Petals
+const tulipContainer = document.querySelector('.tulip-container');
+const petalCount = 30;
+
+// Tulip emojis for floating effect
+const tulipEmojis = ['🌷', '🌸', '🌺', '🌱', '🍃'];
+
+for (let i = 0; i < petalCount; i++) {
+    const petal = document.createElement('div');
+    petal.className = 'tulip-petal';
+
+    // Random tulip emoji
+    petal.innerHTML = tulipEmojis[Math.floor(Math.random() * tulipEmojis.length)];
+
+    // Random styling
+    petal.style.left = Math.random() * 100 + 'vw';
+    petal.style.animationDelay = Math.random() * 10 + 's';
+    petal.style.animationDuration = 5 + Math.random() * 15 + 's';
+    petal.style.fontSize = 10 + Math.random() * 25 + 'px';
+    petal.style.opacity = 0.1 + Math.random() * 0.3;
+
+    tulipContainer.appendChild(petal);
+}
+
+// Add hover effect sa buttons para magpakita ng tulip
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+        // Magdagdag ng temporary tulip sa hover
+        const tempTulip = document.createElement('span');
+        tempTulip.innerHTML = '🌷';
+        tempTulip.style.position = 'absolute';
+        tempTulip.style.left = '-20px';
+        tempTulip.style.top = '50%';
+        tempTulip.style.transform = 'translateY(-50%)';
+        tempTulip.style.fontSize = '1.2rem';
+        tempTulip.style.animation = 'sway 1s ease-in-out infinite';
+        tempTulip.style.opacity = '0.5';
+        this.style.position = 'relative';
+        this.appendChild(tempTulip);
+
+        setTimeout(() => {
+            tempTulip.remove();
+        }, 1000);
+    });
+});
+
+// Optional: Magdagdag ng tulip sa page title
+document.title = '🌷 ' + document.title + ' 🌷';
+</script>
+
+</body>
+</html>
