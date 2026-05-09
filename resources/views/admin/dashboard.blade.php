@@ -11,24 +11,27 @@
     <style>
         body {
             background: #f3f5f9;
-            font-family: Arial;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
         .sidebar {
             min-height: 100vh;
             background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
+            padding-top: 20px;
         }
 
         .sidebar .nav-link {
             color: white;
-            padding: 12px;
-            margin: 5px;
-            border-radius: 10px;
+            padding: 12px 15px;
+            margin: 5px 10px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
         }
 
-        .sidebar .nav-link:hover {
-            background: rgba(255,255,255,0.2);
+        .sidebar .nav-link:hover,
+        .sidebar .nav-link.active {
+            background: rgba(255, 255, 255, 0.25);
         }
 
         .card-box {
@@ -37,9 +40,36 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
-        .btn-edit { background: #ffc107; }
-        .btn-delete { background: #dc3545; color: white; }
-        .btn-family { background: #198754; color: white; }
+        .alert-info {
+            border-radius: 10px;
+            font-size: 1.1rem;
+        }
+
+        .btn-edit {
+            background: #ffc107;
+            color: #000;
+            transition: opacity 0.3s;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            transition: opacity 0.3s;
+        }
+
+        .btn-family {
+            background: #198754;
+            color: white;
+            transition: opacity 0.3s;
+        }
+
+        .btn-edit:hover, .btn-delete:hover, .btn-family:hover {
+            opacity: 0.8;
+        }
+
+        table th {
+            background: #f8f9fa;
+        }
     </style>
 </head>
 
@@ -50,7 +80,7 @@
 
         <!-- SIDEBAR -->
         <div class="col-md-2 px-0">
-            <div class="sidebar d-flex flex-column">
+            <div class="sidebar d-flex flex-column align-items-center">
 
                 <div class="text-center py-4">
                     <i class="fas fa-user-shield fa-3x"></i>
@@ -65,26 +95,20 @@
                     </small>
                 </div>
 
-                <nav class="nav flex-column mt-3">
-
+                <nav class="nav flex-column w-100 mt-3 px-3">
                     <a class="nav-link active" href="#">
                         <i class="fas fa-tachometer-alt"></i> Dashboard
                     </a>
-
                     <a class="nav-link" href="#addResident">
                         <i class="fas fa-user-plus"></i> Add Resident
                     </a>
-
                     <a class="nav-link text-danger" href="{{ url('/logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
-
                     <form id="logout-form" action="{{ url('/logout') }}" method="POST" class="d-none">
                         @csrf
                     </form>
-
                 </nav>
 
             </div>
@@ -100,84 +124,64 @@
 
             <!-- STATS -->
             <div class="row mb-4">
-
-                <div class="col-md-4">
-                    <div class="card card-box p-3 bg-primary text-white">
+                <div class="col-md-4 mb-3">
+                    <div class="card card-box p-3 bg-primary text-white text-center">
                         <h5>Total Residents</h5>
                         <h2 id="totalResidents">0</h2>
                     </div>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="card card-box p-3 bg-success text-white">
+                <div class="col-md-4 mb-3">
+                    <div class="card card-box p-3 bg-success text-white text-center">
                         <h5>Total Males</h5>
                         <h2 id="totalMales">0</h2>
                     </div>
                 </div>
-
-                <div class="col-md-4">
-                    <div class="card card-box p-3 bg-danger text-white">
+                <div class="col-md-4 mb-3">
+                    <div class="card card-box p-3 bg-danger text-white text-center">
                         <h5>Total Females</h5>
                         <h2 id="totalFemales">0</h2>
                     </div>
                 </div>
-
             </div>
 
             <!-- ADD RESIDENT -->
             <div class="card card-box mb-4" id="addResident">
-
                 <div class="card-header bg-primary text-white">
                     Add Resident
                 </div>
-
                 <div class="card-body">
-
                     <form id="residentForm">
-
                         <div class="row">
-
                             <div class="col-md-3 mb-2">
                                 <input type="text" id="firstName" class="form-control" placeholder="First Name" required>
                             </div>
-
                             <div class="col-md-3 mb-2">
                                 <input type="text" id="lastName" class="form-control" placeholder="Last Name" required>
                             </div>
-
                             <div class="col-md-2 mb-2">
                                 <input type="number" id="age" class="form-control" placeholder="Age" required>
                             </div>
-
                             <div class="col-md-2 mb-2">
                                 <select id="gender" class="form-control">
                                     <option>Male</option>
                                     <option>Female</option>
                                 </select>
                             </div>
-
                             <div class="col-md-2 mb-2">
                                 <button class="btn btn-success w-100">Add</button>
                             </div>
-
                         </div>
-
                     </form>
-
                 </div>
             </div>
 
             <!-- TABLE -->
             <div class="card card-box">
-
-                <div class="card-header">
+                <div class="card-header bg-light">
                     Resident List
                 </div>
-
                 <div class="card-body">
-
-                    <table class="table table-hover">
-
+                    <table class="table table-hover align-middle">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -186,13 +190,9 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-
                         <tbody id="residentTable"></tbody>
-
                     </table>
-
                 </div>
-
             </div>
 
         </div>
@@ -206,51 +206,30 @@
     ];
 
     function render(){
-
         let table = document.getElementById('residentTable');
         table.innerHTML = "";
 
         residents.forEach(r => {
-
             table.innerHTML += `
                 <tr>
                     <td>${r.first_name} ${r.last_name}</td>
                     <td>${r.age}</td>
                     <td>${r.gender}</td>
                     <td>
-
-                        <button class="btn btn-sm btn-edit"
-                            onclick="edit(${r.id})">
-                            Edit
-                        </button>
-
-                        <button class="btn btn-sm btn-delete"
-                            onclick="del(${r.id})">
-                            Delete
-                        </button>
-
-                        <button class="btn btn-sm btn-family"
-                            onclick="viewFamily(${r.id})">
-                            Family
-                        </button>
-
+                        <button class="btn btn-sm btn-edit" onclick="edit(${r.id})">Edit</button>
+                        <button class="btn btn-sm btn-delete" onclick="del(${r.id})">Delete</button>
+                        <button class="btn btn-sm btn-family" onclick="viewFamily(${r.id})">Family</button>
                     </td>
                 </tr>
             `;
         });
 
         document.getElementById('totalResidents').innerText = residents.length;
-
-        let males = residents.filter(r => r.gender=="Male").length;
-        let females = residents.filter(r => r.gender=="Female").length;
-
-        document.getElementById('totalMales').innerText = males;
-        document.getElementById('totalFemales').innerText = females;
+        document.getElementById('totalMales').innerText = residents.filter(r => r.gender=="Male").length;
+        document.getElementById('totalFemales').innerText = residents.filter(r => r.gender=="Female").length;
     }
 
-    document.getElementById('residentForm')
-    .addEventListener('submit', function(e){
-
+    document.getElementById('residentForm').addEventListener('submit', function(e){
         e.preventDefault();
 
         residents.push({
@@ -266,11 +245,8 @@
     });
 
     function edit(id){
-
         let r = residents.find(x => x.id==id);
-
         let name = prompt("Edit Name", r.first_name);
-
         if(name){
             r.first_name = name;
             render();
@@ -278,7 +254,6 @@
     }
 
     function del(id){
-
         residents = residents.filter(r => r.id!=id);
         render();
     }
